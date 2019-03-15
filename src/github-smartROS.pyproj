@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{b8985ed4-3df2-466c-b5b3-35f1cb620c6c}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>src\test_app.py</StartupFile>
+    <StartupFile>test_console.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -23,20 +23,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
-    <Content Include="src\smartROS\routers.json" />
+    <Content Include="smartROS\routers.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\smartROS\connections.py" />
-    <Compile Include="src\smartROS\exceptions.py" />
-    <Compile Include="src\smartROS\logmod.py" />
-    <Compile Include="src\smartROS\rosapi.py" />
-    <Compile Include="src\smartROS\settings.py" />
-    <Compile Include="src\smartROS\__init__.py" />
-    <Compile Include="src\test_app.py" />
-    <Compile Include="src\test_ban_ip.py" />
-    <Compile Include="src\test_console.py" />
+    <Compile Include="smartROS\connections.py" />
+    <Compile Include="smartROS\exceptions.py" />
+    <Compile Include="smartROS\logmod.py" />
+    <Compile Include="smartROS\rosapi.py" />
+    <Compile Include="smartROS\settings.py" />
+    <Compile Include="smartROS\__init__.py" />
+    <Compile Include="test_app.py" />
+    <Compile Include="test_ban_ip.py" />
+    <Compile Include="test_console.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="smartROS\" />
     <Folder Include="src" />
     <Folder Include="src\smartROS" />
   </ItemGroup>
