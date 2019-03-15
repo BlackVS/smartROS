@@ -1,0 +1,38 @@
+{
+ "0":
+  {
+	"name" : "Router name",
+	"description" : "Router description",
+	"ip"   : "1.1.1.1",
+	"port" : 8729,
+	"api_ro_user"    : "api_ro", 
+	"api_ro_pass"    : "pa$$w0rd1",
+	"api_rw_user"    : "api_rw", 
+	"api_rw_pass"    : "pa$$w0rd2,
+	"api_ca_cert"    : null
+  },
+ "1":
+  {
+	"name" : "Router name",
+	"description" : "Router description",
+	"ip"   : "1.1.1.1",
+	"port" : 8729,
+	"api_ro_user"    : "api_ro", 
+	"api_ro_pass"    : "pa$$w0rd1",
+	"api_rw_user"    : "api_rw", 
+	"api_rw_pass"    : "pa$$w0rd2,
+	"api_ca_cert"    : "ca1.crt"
+  },
+ "MyRouter":
+  {
+	"name" : "Router name",
+	"description" : "Router description",
+	"ip"   : "2.2.2.2",
+	"port" : 8729,
+	"api_ro_user"    : "api_ro", 
+	"api_ro_pass"    : "pa$$w0rd1",
+	"api_rw_user"    : "api_rw", 
+	"api_rw_pass"    : "pa$$w0rd2,
+	"api_ca_cert"    : "ca2.crt"
+  }
+}	
