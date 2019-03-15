@@ -13,7 +13,24 @@ The main idea is to make low-level ROS API more human-friendly + make it more se
    ```bash
       /ip/route/print where="dst-address=='0.0.0.0/0'"
    ```
-    
+   or
+   ```bash
+      /ip/firewall/address-list/print where="list==Blacklist and address=='8.8.8.8'"
+   ```
+- [x] two styles API calls supported i.e.:
+   ```python
+      import smartROS
+      router = smartROS.getRouter("Main)
+      print( router.ip.route.print (where="dst-address=='0.0.0.0/0'") )
+   ```
+   and
+   ```python
+      import smartROS
+      router = smartROS.getRouter("Main)
+      print( router.do ("/ip/route/print", where="dst-address=='0.0.0.0/0'") )
+   ```
+both do the same - get list of default gateways
+
 Good security for ROS API can be achieved only combining at least:
 - secureROS API with SSL+certificates
 - proper firewall/permisiions configuration on server side 
