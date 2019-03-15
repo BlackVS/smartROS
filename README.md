@@ -20,13 +20,13 @@ The main idea is to make low-level ROS API more human-friendly + make it more se
 - [x] two styles API calls supported i.e.:
    ```python
       import smartROS
-      router = smartROS.getRouter("Main)
+      router = smartROS.getRouter("Main")
       print( router.ip.route.print (where="dst-address=='0.0.0.0/0'") )
    ```
    and
    ```python
       import smartROS
-      router = smartROS.getRouter("Main)
+      router = smartROS.getRouter("Main")
       print( router.do ("/ip/route/print", where="dst-address=='0.0.0.0/0'") )
    ```
 both do the same - get list of default gateways
