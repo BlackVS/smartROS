@@ -69,6 +69,7 @@ cd $INSTALLDIR
 echo ""
 print_h1 "installing python3-pip"
 echo ""
+sudo apt update
 sudo apt-get -qq install python3-pip -y 1>/dev/null
 check
 
