@@ -2,9 +2,10 @@
 
 sudo echo
 
-APPDIR=secROSAPI
-APPNAME="Secure ROS API"
+APPDIR=smartros
+APPNAME="SmartROS API"
 INSTALLDIR=/opt/$APPDIR
+GITURL=https://github.com/BlackVS/smartROS.git
 
 WHITE='\033[1;37m'
 RED='\033[0;31m'
@@ -50,14 +51,14 @@ function run() {
     check
 }
 
-print_h0 "Installing $APPNAME"
-print_h0 "Install bot to: $INSTALLDIR"
+print_h0 "Installing: $APPNAME"
+print_h0 "Install to: $INSTALLDIR"
 
 run "Creating folder $INSTALLDIR" \
 sudo mkdir $INSTALLDIR
 
 run "cloning from git" \
-#sudo git clone https://github.com/BlackVS/telegram-bot.git $INSTALLDIR
+sudo git clone $GITURL $INSTALLDIR
 
 run "Entering $INSTALLDIR" \
 cd $INSTALLDIR
@@ -74,8 +75,22 @@ check
 run "installing dependencies" \
 sudo pip3 -q install -r requirements.txt
 
+run "Creating settings.py config file:"\
+sudo cp $INSTALLDIR/src/smartROS/settings.py.template $INSTALLDIR/src/smartROS/settings.py
+
+run "Creating routers.json config file:"\
+sudo cp $INSTALLDIR/src/smartROS/routers.json.template $INSTALLDIR/src/smartROS/routers.json
+
 echo ""
-print_h0 "Please edit config files:"
-echo " $INSTALLDIR/config/settings.py"
+print_h0 "Please update config files:"
+echo " $INSTALLDIR/src/smartROS/settings.py"
+echo " $INSTALLDIR/src/smartROS/routers.json"
 echo " "
+echo "and test connection running test console:"
+echo " $INSTALLDIR/src/test_console.py"
+echo "and running commands:"
+echo "   /ip/route/print"
+echo "   /quit"
+
+
 print_h0 "The END"
