@@ -48,7 +48,8 @@ Good security for ROS API can be achieved only combining at least:
 
    Run:
    ```bash
-   cd /opt
+   cd ~
+   wget https://raw.githubusercontent.com/BlackVS/smartROS/master/install.sh -O - | bash
    ```
    Edit config files and run script (see log of install.sh for details)
 
