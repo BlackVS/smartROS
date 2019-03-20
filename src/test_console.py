@@ -6,5 +6,6 @@ import smartROS
 
 if __name__ == '__main__':
     router = smartROS.getRouter(0,True);
-    router.console()
-    router.disconnect()
+    if router:
+        router.console()
+        router.disconnect()

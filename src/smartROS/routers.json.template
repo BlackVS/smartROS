@@ -8,7 +8,7 @@
 	"api_ro_user"    : "api_ro", 
 	"api_ro_pass"    : "pa$$w0rd1",
 	"api_rw_user"    : "api_rw", 
-	"api_rw_pass"    : "pa$$w0rd2,
+	"api_rw_pass"    : "pa$$w0rd2",
 	"api_ca_cert"    : null
   },
  "1":
@@ -20,7 +20,7 @@
 	"api_ro_user"    : "api_ro", 
 	"api_ro_pass"    : "pa$$w0rd1",
 	"api_rw_user"    : "api_rw", 
-	"api_rw_pass"    : "pa$$w0rd2,
+	"api_rw_pass"    : "pa$$w0rd2",
 	"api_ca_cert"    : "ca1.crt"
   },
  "MyRouter":
@@ -32,7 +32,7 @@
 	"api_ro_user"    : "api_ro", 
 	"api_ro_pass"    : "pa$$w0rd1",
 	"api_rw_user"    : "api_rw", 
-	"api_rw_pass"    : "pa$$w0rd2,
+	"api_rw_pass"    : "pa$$w0rd2",
 	"api_ca_cert"    : "ca2.crt"
   }
 }	

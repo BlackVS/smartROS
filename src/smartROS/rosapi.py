@@ -203,7 +203,14 @@ def connect(host, username, password, **kwargs):
     :param ssl_wrapper: Callable (e.g. ssl.SSLContext instance) to wrap socket with.
     """
     arguments = ChainMap(kwargs, defaults)
-    transport = create_transport(host, **arguments)
+    try:
+        transport = create_transport(host, **arguments)
+    except:
+        logger.error("Failed to create transport: ")
+        logger.error("  host: {}".format(host))
+        logger.error("  args: {}".format(arguments))
+        raise
+
     protocol = ApiProtocol(transport=transport, encoding=arguments['encoding'])
     api = RosAPI(protocol=protocol)
 
