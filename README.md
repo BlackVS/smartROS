@@ -51,13 +51,12 @@ Good security for ROS API can be achieved only combining at least:
    cd ~
    wget https://raw.githubusercontent.com/BlackVS/smartROS/master/install.sh -O - | bash
    ```
-   Edit config files and run script (see log of install.sh for details)
-
  
- 
-### Settings
+### 3. Settings
+#### settings.py
+#### routers.json
 
-### Debug
+### 4. Test connection via console script
 
 ---
 
