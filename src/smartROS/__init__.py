@@ -92,6 +92,11 @@ class RouterContext(object):
             #  In the case no certificate is used in '/ip service' settings then anonymous Diffie-Hellman cipher have to be used to establish connection. 
             ctx.verify_mode = ssl.CERT_NONE
             ctx.set_ciphers('ADH')
+            # check for ADH support
+            if not (ssl.OP_SINGLE_DH_USE|ssl.OP_SINGLE_ECDH_USE):
+                logger.warning("ADH is not supported by this system.")
+                logger.warning("Enable ADH on this system or use certificates for connection.")
+                return
 
         kwargs={ "host" : cfg['ip'], 
                     "port" : cfg['port'],
