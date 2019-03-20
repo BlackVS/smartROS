@@ -55,6 +55,22 @@ Good security for ROS API can be achieved only combining at least:
 ### 3. Settings
 #### settings.py
 #### routers.json
+#### OpenSSL
+If you use secure connection WITHOUT certificates to router you should have ADH support enabled in OpenSSL.
+To check if it enabled run:
+   ```bash
+   openssl ciphers -s 'ADH'
+   ```
+For example:
+   ```bash
+   >openssl ciphers -s 'ADH'
+   TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ADH-AES256-GCM-SHA384:ADH-AES128-GCM-SHA256:ADH-AES256-SHA256:ADH-CAMELLIA256-SHA256:**ADH-AES128-SHA256**:ADH-CAMELLIA128-SHA256:ADH-AES256-SHA:ADH-CAMELLIA256-SHA:ADH-AES128-SHA:ADH-SEED-SHA:ADH-CAMELLIA128-SHA
+   ```
+If you don't see ADH-AES128-SHA256 in answer it means you can't connect to router via SSSL without certificate.
+You have the next choices:
+* enable certificate for Mikrotik API-SSL. Check Mikrotik docs for this
+* enable ADH ciphers for openSSL. Check openSSL docs for this
+* use non-secure connection (but it is disabled in smartROS due to high security risks)
 
 ### 4. Test connection via console script
 

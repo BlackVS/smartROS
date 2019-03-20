@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{b8985ed4-3df2-466c-b5b3-35f1cb620c6c}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>test_rabbitmq.py</StartupFile>
+    <StartupFile>test_console.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
