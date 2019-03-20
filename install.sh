@@ -5,6 +5,8 @@ sudo echo
 APPDIR=smartros
 APPNAME="SmartROS API"
 INSTALLDIR=/opt/$APPDIR
+LOGDIR=/var/log/$APPDIR
+TEMPDIR=/tmp/$APPDIR
 GITURL=https://github.com/BlackVS/smartROS.git
 
 WHITE='\033[1;37m'
@@ -83,6 +85,18 @@ check
 print_h1 "Creating routers.json config file:"
 sudo cp $INSTALLDIR/src/smartROS/routers.json.template $INSTALLDIR/src/smartROS/routers.json
 check
+
+print_h1 "Creating default log dir: $LOGDIR"
+sudo mkdir $LOGDIR
+sudo chmod a+w $LOGDIR
+check
+
+print_h1 "Creating default temp dir: $TEMPDIR"
+sudo mkdir $TEMPDIR
+sudo chmod a+w $TEMPDIR
+check
+
+print_h1 "WARNING: please manually check and update permission for temp/log folders, by default ALL have write permissions to these folder"
 
 echo ""
 print_h0 "Please update config files:"
