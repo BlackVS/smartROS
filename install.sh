@@ -75,20 +75,23 @@ check
 run "installing dependencies" \
 sudo pip3 -q install -r requirements.txt
 
-run "Creating settings.py config file:"\
+print_h1 "Creating settings.py config file:"
 sudo cp $INSTALLDIR/src/smartROS/settings.py.template $INSTALLDIR/src/smartROS/settings.py
+check
 
-run "Creating routers.json config file:"\
+print_h1 "Creating routers.json config file:"
 sudo cp $INSTALLDIR/src/smartROS/routers.json.template $INSTALLDIR/src/smartROS/routers.json
+check
 
 echo ""
 print_h0 "Please update config files:"
 echo " $INSTALLDIR/src/smartROS/settings.py"
 echo " $INSTALLDIR/src/smartROS/routers.json"
 echo " "
-echo "and test connection running test console:"
+print_h0 "and test connection running test console (by default to router 0):"
 echo " $INSTALLDIR/src/test_console.py"
-echo "and running commands:"
+echo " "
+print_h0 "In console try commands:"
 echo "   /ip/route/print"
 echo "   /quit"
 
