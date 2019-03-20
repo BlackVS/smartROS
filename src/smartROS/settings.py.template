@@ -1,14 +1,6 @@
-{
- "0":
-  {
-	"name" : "CCR-UA-2 (Backup)",
-	"description" : "Backup router in UA",
-	"ip"   : "10.174.1.2",
-	"port" : 8729,
-	"api_ro_user"    : "api_ro", 
-	"api_ro_pass"    : "5GqUqu5ccm2v2C83S7gcxHH7",
-	"api_rw_user"    : "api_rw", 
-	"api_rw_pass"    : "JeNgHE4abucXjtWzGww72uJ3",
-	"api_ssl_verify" : false
-  },
-}	
+class SETTINGS():
+    app_name    = "smartros"               # keyword, don't change if not sure
+    app_tmp_dir = "/tmp/" + app_name       # script must have write permissions to this folder
+    app_log_dir = "/var/log/" + app_name   # script must have write permissions to this folder
+    debug       = False
+    #debug       = True
