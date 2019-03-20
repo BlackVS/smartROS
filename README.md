@@ -37,17 +37,19 @@ Good security for ROS API can be achieved only combining at least:
 - proper firewall/permissions configuration on router side (i.e. at least don't use admin/full access logins for API %)
 
 ## Configuration / Installation
-1. Router:
+### 1. Router:
 - enable _api-ssl_
 - enable 8729 (or another) port only for specific peers via firewall
 - add _Available From_ in api-ssl config
 - use router certificate
 - create own _ro_ and _rw_ users for api and restrict access for specific API
 
-###Installation:                                        
+### 2. Linux/ubuntu server:
+
    Run:
    ```bash
    cd ~
+   wget https://raw.githubusercontent.com/BlackVS/smartROS/master/install.sh -O - | bash
    ```
    Edit config files and run script (see log of install.sh for details)
 
