@@ -117,14 +117,14 @@ For example:
    ```
 If you don't see ADH-AES128-SHA256 in answer it means you can't connect to router via SSL/TLS without certificate.
 You have the next choices in such case:
-* enable certificate for Mikrotik API-SSL. Check Mikrotik [docs](https://wiki.mikrotik.com/wiki/Manual:Create_Certificates) or this my [script](https://github.com/BlackVS/Mikrotik-scripts/tree/master/scripts/OpenVPN%20-%20certificates) for this. In the last case you need just import scripts and call:
+* enable certificate for Mikrotik API-SSL. Check Mikrotik [docs](https://wiki.mikrotik.com/wiki/Manual:Create_Certificates) or my [script](https://github.com/BlackVS/Mikrotik-scripts/tree/master/scripts/OpenVPN%20-%20certificates) for this. In the last case you need just import scripts and call:
    ```bash
    /system script run certs_createCA   
    /system script run certs_createServer
    ```
-   Generated server's certificate should be set in API-SSL properties in router (ip->services->api-ssl->certificate), CA certificate - imported to client and set in connection properties (routers.json). Default folder for certificates is /opt/smartros/src/cert/ )
-* enable ADH ciphers for openSSL. Checks docs for your system.
-* use Linux distribution with already enabled ADH. For example, Ubuntu server 18.04.x has not support for ADH from box (OpenSSL 1.1.0g) but Ubuntu server 18.10 has (OpenSSL 1.1.1)
+   Generated server's certificate should be set in API-SSL properties in router (ip->services->api-ssl->certificate), CA certificate - imported to client and set in connection properties ( *api_ca_cert* property in corresponding router's settings in *routers.json* ). Default folder for certificates is */opt/smartros/src/smartROS/cert/ *)
+* enable ADH ciphers for OpenSSL. Checks docs for your system how to do this (it is a good quest).
+* use Linux distribution with already enabled ADH. For example, Ubuntu Server 18.04.x has not support for ADH from box (OpenSSL 1.1.0g) but Ubuntu Server 18.10 has (OpenSSL 1.1.1)
 * use non-secure connection (but it is disabled in smartROS due to high security risks). As variant to create VPN connection to router and connect to API via such vpn.
 
 ### 4. Test connection via console script
