@@ -69,7 +69,7 @@ JSON file containg credentials for all routers to connect to.
       ]
    }
    ```
-*RouterXShortName* - number or string, used in *smartROS.getRouter()* call as first arguemnt.
+*RouterXShortName* - number or string, used in *smartROS.getRouter()* call as first argument.
 
 *RouterXParameters* - router's properties in JSON format.
 
@@ -102,7 +102,7 @@ For example:
      }
     }
    ```
-Here is the first router (shortname 0 or "0") will be connected tousing TLS ADH-AES128-SHA256 (without certificates, right now ROS supports only this cipher for SSL without certificates), the second one will be connected to using certificate. Sure both routers must have API SSL enabled, proper users with mentioned passwords created and certificates for the second one generated. CA certificate named *ca1.crt*  of the second router must be placed in the *smartROS/certs* folder.  
+Here is the first router (shortname 0 or "0") will be connected to using TLS ADH-AES128-SHA256 (without certificates, right now ROS supports only this cipher for SSL without certificates), the second one will be connected to using certificate. Sure both routers must have API SSL enabled, proper users with mentioned passwords created and certificates for the second one generated. CA certificate named *ca1.crt*  of the second router must be placed in the *smartROS/certs* folder.  
 
 #### OpenSSL
 If you use secure connection WITHOUT certificates to router you must have ADH support enabled in OpenSSL.
