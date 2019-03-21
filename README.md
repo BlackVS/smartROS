@@ -102,7 +102,7 @@ For example:
      }
     }
    ```
-Here first router (shortname 0 or "0") will be connected using TLS ADH-AES128-SHA256 (without certificates, right now ROS supports only this cipher for SSL without certificates), the second one will be connected using certificate. Sure both routers must have API SSL enabled, proper users with mentioned passwords created and certificates for the second one generated. CA certificate named *ca1.crt*  of the second router must be placed in the *smartROS/certs* folder.  
+Here is the first router (shortname 0 or "0") will be connected tousing TLS ADH-AES128-SHA256 (without certificates, right now ROS supports only this cipher for SSL without certificates), the second one will be connected to using certificate. Sure both routers must have API SSL enabled, proper users with mentioned passwords created and certificates for the second one generated. CA certificate named *ca1.crt*  of the second router must be placed in the *smartROS/certs* folder.  
 
 #### OpenSSL
 If you use secure connection WITHOUT certificates to router you must have ADH support enabled in OpenSSL.
