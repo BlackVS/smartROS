@@ -2,14 +2,14 @@
 
 ROS API wrapper
 
-The main idea is to make low-level ROS API more human-friendly + make it more secure (due to starting from 6.43 passwords sents plain i.e. TLS/SSL **must** be used)
+The main idea is to make low-level ROS API more human-friendly + make it more secure (due to starting from 6.43 passwords are sent plain i.e. TLS/SSL **must** be used)
 
 ## Features
 - [x] low level API included but not directly accessible from client side
 - [x] SSL/TLS used by default
 - [x] server's certificates check supported (client certificates not supported by ROS for now :( )
-- [x] router device can be pre-configured - config/credentials stored separetly. Via proper Linux permisisons these settings not available for client (due to very often cleint is web based service)
-- [x] supports 'where' conditions in human readable form, for example try in console (included in project):
+- [x] router device can be pre-configured - config/credentials stored separately. Via proper Linux permisisons these settings not available for client (due to very often client is web based service)
+- [x] supports 'where' conditions in human readable form, for example try in console (included in this project):
    ```bash
       /ip/route/print where="dst-address=='0.0.0.0/0'"
    ```
@@ -54,8 +54,8 @@ Good security for ROS API can be achieved only combining at least:
  
 ### 3. Settings
 #### settings.py
-By default is in /opt/smartros/src/smartROS/settings.py
-Usually yoy needn't edit this but in the case if startROS is called from otehr application changes may be required (for example, to forward logs in proper folder).
+By default is in */opt/smartros/src/smartROS/settings.py*
+Usually you needn't edit this but in the case if startROS is called from otehr application changes may be required (for example, to forward logs in proper folder).
 * **app_name**    = "smartros"             # keyword, don't change if not sure
 * **app_tmp_dir** = "/tmp/" + app_name     # script must have write permissions to this folder
 * **app_log_dir** = "/var/log/" + app_name # script must have write permissions to this folder
@@ -69,9 +69,9 @@ JSON file containg credentials for all routers to connect to.
       ]
    }
    ```
-*RouterXShortName* - number or string.
+*RouterXShortName* - number or string, used in *smartROS.getRouter()* call as first arguemnt.
 
-*RouterXParameters* - router's properties in JSON fromat
+*RouterXParameters* - router's properties in JSON format.
 
 For example:
    ```json
@@ -102,11 +102,11 @@ For example:
      }
     }
    ```
-Here first router (shortname 0 or "0") will be connected using TLS ADH-AES128-SHA256 (without certificates, right now ADH supports only this cipher), the second one will be connected using certificate. Sure both routers must have API SSL enabled, proper users with mentioned passwords created and certificates for the second one generated. CA certificate of the second routers must be placed in the *smartROS/certs* folder.  
+Here first router (shortname 0 or "0") will be connected using TLS ADH-AES128-SHA256 (without certificates, right now ROS supports only this cipher for SSL without certificates), the second one will be connected using certificate. Sure both routers must have API SSL enabled, proper users with mentioned passwords created and certificates for the second one generated. CA certificate named *ca1.crt*  of the second router must be placed in the *smartROS/certs* folder.  
 
 #### OpenSSL
-If you use secure connection WITHOUT certificates to router you should have ADH support enabled in OpenSSL.
-To check if it enabled run:
+If you use secure connection WITHOUT certificates to router you must have ADH support enabled in OpenSSL.
+To check if it enabled run in terminal:
    ```bash
    openssl ciphers -s ADH
    ```
@@ -116,7 +116,7 @@ For example:
    TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_128_GCM_SHA256:ADH-AES256-GCM-SHA384:ADH-AES128-GCM-SHA256:ADH-AES256-SHA256:ADH-CAMELLIA256-SHA256:**ADH-AES128-SHA256**:ADH-CAMELLIA128-SHA256:ADH-AES256-SHA:ADH-CAMELLIA256-SHA:ADH-AES128-SHA:ADH-SEED-SHA:ADH-CAMELLIA128-SHA
    ```
 If you don't see ADH-AES128-SHA256 in answer it means you can't connect to router via SSL/TLS without certificate.
-You have the next choices:
+You have the next choices in such case:
 * enable certificate for Mikrotik API-SSL. Check Mikrotik [docs](https://wiki.mikrotik.com/wiki/Manual:Create_Certificates) or this my [script](https://github.com/BlackVS/Mikrotik-scripts/tree/master/scripts/OpenVPN%20-%20certificates) for this. In the last case you need just import scripts and call:
    ```bash
    /system script run certs_createCA   
