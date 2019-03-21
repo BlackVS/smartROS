@@ -6,6 +6,7 @@ from socket import create_connection, error as SOCKET_ERROR, timeout as SOCKET_T
 from collections import ChainMap
 import pyparsing as pp
 import re
+import ssl
 
 from .exceptions import *
 from .connections import *
@@ -15,12 +16,16 @@ def login_plain(api, username, password):
     """Login using post routeros 6.43 authorization method."""
     api('/login', **{'name': username, 'password': password})
 
+
+CONN_WRAPPER_NO_SSL  = lambda sock: sock
+CONN_WRAPPER_TLS_ADH = lambda sock: ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1_2, ciphers="ADH-AES128-SHA256")
+
 defaults = {
             'timeout': 10,
             'port': 8729, #ssl port by default
             'saddr': '',
             'encoding': 'ISO-8859-1', #need for cyrrilic symbols -> ASCII, UTF-8 will fail for them
-            'ssl_wrapper': lambda sock: sock,
+            'ssl_wrapper': CONN_WRAPPER_NO_SSL,
             }
 
 

@@ -75,11 +75,13 @@ class RouterContext(object):
         if cfg==None:
             raise ConfigError("No settings for \"{}\" in config found!".format(sid))
 
-        #ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
+
+        wrapper=CONN_WRAPPER_NO_SSL
 
         if cfg["api_ca_cert"]:
+            #ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+            ctx = ssl.create_default_context()
+            ctx.check_hostname = False
             cert=os.path.join(dir_cur, 'certs')
             cert=os.path.join(cert, cfg["api_ca_cert"] )
             try:
@@ -87,20 +89,17 @@ class RouterContext(object):
             except FileNotFoundError as inst:
                 logger.error("{} : {}".format(str(inst),cert))
                 raise
-        else:
+            wrapper=ctx.wrap_socket
+        else: 
             #### NO CERT
             #  In the case no certificate is used in '/ip service' settings then anonymous Diffie-Hellman cipher have to be used to establish connection. 
-            ctx.verify_mode = ssl.CERT_NONE
-            ctx.set_ciphers('ADH')
-            # check for ADH support
-            if not (ssl.OP_SINGLE_DH_USE|ssl.OP_SINGLE_ECDH_USE):
-                logger.warning("ADH is not supported by this system.")
-                logger.warning("Enable ADH on this system or use certificates for connection.")
-                return
+            # ctx.verify_mode = ssl.CERT_NONE
+            # ctx.set_ciphers('ADH')
+            wrapper=CONN_WRAPPER_TLS_ADH
 
         kwargs={ "host" : cfg['ip'], 
-                    "port" : cfg['port'],
-                    "ssl_wrapper" : ctx.wrap_socket 
+                 "port" : cfg['port'],
+                 "ssl_wrapper" : wrapper
                 }
         kwargs["username"] = cfg[ ('api_rw_user','api_ro_user')[fReadOnly] ]
         kwargs["password"] = cfg[ ('api_rw_pass','api_ro_pass')[fReadOnly] ]
