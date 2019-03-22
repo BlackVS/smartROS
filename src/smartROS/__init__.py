@@ -1,5 +1,4 @@
 import os, sys
-import ssl
 import json
 import re
 from collections import ChainMap
@@ -76,41 +75,25 @@ class RouterContext(object):
             raise ConfigError("No settings for \"{}\" in config found!".format(sid))
 
 
-        wrapper=CONN_WRAPPER_NO_SSL
+        wrapper=CONN_WRAPPER_NO_SSL()
 
-        if cfg["api_ca_cert"]:
-            #ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            cert=os.path.join(dir_cur, 'certs')
-            cert=os.path.join(cert, cfg["api_ca_cert"] )
-            try:
-                ctx.load_verify_locations(cafile=cert)
-            except FileNotFoundError as inst:
-                logger.error("{} : {}".format(str(inst),cert))
-                raise
-            wrapper=ctx.wrap_socket
-        else: 
-            #### NO CERT
-            #  In the case no certificate is used in '/ip service' settings then anonymous Diffie-Hellman cipher have to be used to establish connection. 
-            # ctx.verify_mode = ssl.CERT_NONE
-            # ctx.set_ciphers('ADH')
-            wrapper=CONN_WRAPPER_TLS_ADH
+        if cfg.get("api_use_tls",True): #by default use TLS
+            if cfg.get("api_ca_cert",None):
+                #wrapper=CONN_WRAPPER_TLS_CERT(cfg["api_ca_cert"], SETTINGS.app_certs_dir).wrapper
+                wrapper=CONN_WRAPPER_TLS_CERT(cfg["api_ca_cert"], SETTINGS.app_certs_dir)
+            else: 
+                #### NO CERT
+                #  In the case no certificate is used in '/ip service' settings then anonymous Diffie-Hellman cipher have to be used to establish connection. 
+                # ctx.verify_mode = ssl.CERT_NONE
+                # ctx.set_ciphers('ADH')
+                wrapper=CONN_WRAPPER_TLS(ssl.PROTOCOL_TLSv1_2, "ADH-AES128-SHA256")
 
-        kwargs={ "host" : cfg['ip'], 
-                 "port" : cfg['port'],
-                 "ssl_wrapper" : wrapper
-                }
-        kwargs["username"] = cfg[ ('api_rw_user','api_ro_user')[fReadOnly] ]
-        kwargs["password"] = cfg[ ('api_rw_pass','api_ro_pass')[fReadOnly] ]
+        username = cfg[ ('api_rw_user','api_ro_user')[fReadOnly] ]
+        password = cfg[ ('api_rw_pass','api_ro_pass')[fReadOnly] ]
 
         try:
             logger.debug("Trying connect to router with params:")
-            for k,v in kwargs.items():
-                if k=="password":
-                    v="*"*len(v)
-                logger.debug("  {}={}".format(k,v))
-            api = rosapi.connect(**kwargs)
+            api = rosapi.connect(cfg['ip'], cfg['port'], username, password, wrapper )
         except Exception as inst:
             logger.error("Failed to connect to router!")
             raise

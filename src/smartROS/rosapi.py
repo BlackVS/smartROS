@@ -2,6 +2,7 @@
 #1. Initially based on https://github.com/luqasz/librouteros
 #2. ROS >= 6.43
 
+import os
 from socket import create_connection, error as SOCKET_ERROR, timeout as SOCKET_TIMEOUT
 from collections import ChainMap
 import pyparsing as pp
@@ -17,17 +18,71 @@ def login_plain(api, username, password):
     api('/login', **{'name': username, 'password': password})
 
 
-CONN_WRAPPER_NO_SSL  = lambda sock: sock
-CONN_WRAPPER_TLS_ADH = lambda sock: ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1_2, ciphers="ADH-AES128-SHA256")
+class CONN_WRAPPER_NO_SSL(object):
+    def __call__(self, sock):
+        return sock
 
-defaults = {
-            'timeout': 10,
-            'port': 8729, #ssl port by default
-            'saddr': '',
-            'encoding': 'ISO-8859-1', #need for cyrrilic symbols -> ASCII, UTF-8 will fail for them
-            'ssl_wrapper': CONN_WRAPPER_NO_SSL,
-            }
+    def __str__(self):
+        return "NO SSL Wrapper, just bypass calls"
 
+class CONN_WRAPPER_TLS(object):
+    wrapper  = None
+    protocol = None
+    ciphers  = None
+    def __init__(self, protocol=ssl.PROTOCOL_TLSv1_2, ciphers="ADH-AES128-SHA256"):
+        self.wrapper  = lambda sock: ssl.wrap_socket(sock, ssl_version=protocol, ciphers=ciphers)
+        self.protocol = protocol
+        self.ciphers  = ciphers
+
+    def __call__(self, sock):
+        if self.wrapper:
+            return self.wrapper(sock)
+        return None
+
+    def __str__(self):
+        if self.wrapper:
+            return "SSL Wrapper, {}, {}".format(self.protocol.name, self.ciphers)
+        return "SSL Wrapper, not initialized"
+
+class CONN_WRAPPER_TLS_CERT(object):
+    ctx  = None
+    cert = None
+    wrapper = None
+
+    def __init__(self, cert_name, certs_dir='certs'):
+        #ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        #
+        if not os.path.isabs(certs_dir):
+            dir_cur=os.path.dirname(os.path.realpath(__file__))
+            certs_dir=os.path.join(dir_cur, certs_dir)
+        #now certs_dir is abs path
+        if not os.path.exists(certs_dir):
+            logger.error("Path {} not exists!".format(certs_dir))
+            raise FileNotFoundError(certs_dir)
+        cert=os.path.join(certs_dir, cert_name)
+        if not os.path.exists(cert):
+            logger.error("File {} not exists!".format(cert))
+            raise FileNotFoundError(cert)
+        try:
+             ctx.load_verify_locations(cafile=cert)
+        except FileNotFoundError as inst:
+                logger.error("{} : {}".format(str(inst),cert))
+                raise
+        self.ctx=ctx
+        self.wrapper=ctx.wrap_socket
+        self.cert=cert
+
+    def __call__(self, sock):
+        if self.wrapper:
+            return self.wrapper(sock)
+        return None
+
+    def __str__(self):
+        if self.wrapper:
+            return "SSL Wrapper, cert={}".format(self.cert)
+        return "SSL Wrapper, not initialized"
 
 class RosAPI(object):
     def __init__(self, protocol):
@@ -194,29 +249,40 @@ class RosAPI(object):
             raise TrapError(traps=errors_trap)
 
 
-def connect(host, username, password, **kwargs):
+def connect(host, port, username, password, ssl_wrapper=CONN_WRAPPER_NO_SSL, timeout=10, src_addr=None, encoding='ISO-8859-1'):
     """
     Connect and login to routeros device.
     Upon success return a Api class.
 
-    :param host: Hostname to connecto to. May be ipv4,ipv6,FQDN.
-    :param username: Username to login with.
-    :param password: Password to login with. Only ASCII characters allowed.
-    :param timeout: Socket timeout. Defaults to 10.
-    :param port: Destination port to be used. Defaults to 8729.
-    :param saddr: Source address to bind to.
+    :param host: Host's ip/name to connect to. May be ipv4,ipv6,FQDN.
+    :param port: Host's port to connect to.
+    :param username   : Username to login with.
+    :param password   : Password to login with. Only ASCII characters allowed.
+    :param timeout    : Socket timeout. Defaults to 10.
+    :param src_addr   : Source address to bind to.
     :param ssl_wrapper: Callable (e.g. ssl.SSLContext instance) to wrap socket with.
+    :param encoding   : how to decode stream. By default 'ISO-8859-1' or will fail on cyrrilic symbols in comments -> ASCII, UTF-8 will fail for them
     """
-    arguments = ChainMap(kwargs, defaults)
+
+    logger.debug("  host:port={}:{}".format(host,port))
+    logger.debug("  username={}".format(username))
+    logger.debug("  password={}".format("*"*len(password)))
+    logger.debug("  ssl wrapper={}".format(ssl_wrapper))
+    logger.debug("  timeout ={}s".format(timeout))
+    logger.debug("  src addres={}".format(src_addr))
+    logger.debug("  encoding={}".format(encoding))
+
     try:
-        transport = create_transport(host, **arguments)
+        sock = create_connection( (host, port), timeout, src_addr)
+        sock = ssl_wrapper(sock)
+        transport=SocketTransport(sock)
+    except (SOCKET_ERROR, SOCKET_TIMEOUT) as error:
+        raise ConnectionError(error)
     except:
-        logger.error("Failed to create transport: ")
-        logger.error("  host: {}".format(host))
-        logger.error("  args: {}".format(arguments))
+        logger.error("Failed to create transport!")
         raise
 
-    protocol = ApiProtocol(transport=transport, encoding=arguments['encoding'])
+    protocol = ApiProtocol(transport=transport, encoding=encoding)
     api = RosAPI(protocol=protocol)
 
     for method in (login_plain,):#only plain for now
@@ -230,11 +296,3 @@ def connect(host, username, password, **kwargs):
             raise
 
 
-def create_transport(host, **kwargs):
-    try:
-        sock = create_connection((host, kwargs['port']), kwargs['timeout'], (kwargs['saddr'], 0))
-        sock = kwargs['ssl_wrapper'](sock)
-        return SocketTransport(sock)
-    except (SOCKET_ERROR, SOCKET_TIMEOUT) as error:
-        raise ConnectionError(error)
-    return SocketTransport(sock=sock)

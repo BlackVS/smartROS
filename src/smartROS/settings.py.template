@@ -1,6 +1,14 @@
+#################################################################################
+# Set only in this values optionss
+# please make this file accessible only for root! 
+
+#later config from /etc/smartros/ will be taken if present
 class SETTINGS():
-    app_name    = "smartros"               # keyword, don't change if not sure
-    app_tmp_dir = "/tmp/" + app_name       # script must have write permissions to this folder
-    app_log_dir = "/var/log/" + app_name   # script must have write permissions to this folder
+    app_name      = "smartros"                  # keyword, don't change if not sure
+    app_tmp_dir   = "/tmp/" + app_name          # script must have write permissions to this folder
+    app_log_dir   = "/var/log/" + app_name      # script must have write permissions to this folder
+    app_certs_dir = "/etc/%s/certs" % app_name  # if relative path - should be in .../src/smartROS/ folder
+    #app_certs_dir = "certs"   # if relative path - should be in .../src/smartROS/ folder
     debug       = False
     #debug       = True
+
