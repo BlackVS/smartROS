@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 #1. Initially based on https://github.com/luqasz/librouteros
 #2. ROS >= 6.43
 
@@ -6,6 +5,8 @@ import os
 from socket import create_connection, error as SOCKET_ERROR, timeout as SOCKET_TIMEOUT
 from collections import ChainMap
 import pyparsing as pp
+from pyparsing import pyparsing_common as ppc
+
 import re
 import ssl
 
@@ -165,11 +166,25 @@ class RosAPI(object):
                 return s
             return None
 
+        def parseaction_ipv4_address(str,location,tokens):
+            return None
+
+        def parseaction_ipv4_network(str,location,tokens):
+            return None
+
+        def parseaction_index(str,location,tokens):
+            return None
+
         number     = pp.Word(pp.nums)
         string     = pp.quotedString.setParseAction( pp.removeQuotes )
         identifier = pp.Word(pp.alphas+".", pp.alphanums + "-_").setParseAction(parseaction_identifier)
-        
-        operand = identifier | number | string
+        index      = pp.Word("*", pp.alphanums).setParseAction(parseaction_index)
+        ipv4_address = ppc.ipv4_address.setParseAction(parseaction_ipv4_address)
+        ipv4_mask32  = pp.Regex('[1-2][0-9]|[3][0-2]|[0-9]')
+        ipv4_network = pp.Combine( ppc.ipv4_address + "/" + ipv4_mask32).setParseAction(parseaction_ipv4_network)
+        #end of ipv4
+
+        operand = ipv4_network | ipv4_address | identifier | number | string 
 
         operator        = pp.Regex(">=|<=|!=|>|<|==").setName("operator")
         

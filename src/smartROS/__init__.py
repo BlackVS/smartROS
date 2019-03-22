@@ -63,7 +63,8 @@ class RouterContext(object):
     # 2 - value inside quotes if present
     # 3 - value without quotes if present 
     # 4 - soul text if present. First is command, rest are optional parameters
-    reConsoleParser = re.compile(r"([\w.]+)\s*=\s*(?:(?P<sym>[\"'])((?:\\(?P=sym)|(?:(?!(?P=sym))).)*)(?P=sym)|(\w+))|(\S+)")
+    #reConsoleParser = re.compile(r"([\w.]+)\s*=\s*(?:(?P<sym>[\"'])((?:\\(?P=sym)|(?:(?!(?P=sym))).)*)(?P=sym)|(\w+))|(\S+)")
+    reConsoleParser = re.compile(r"([\w.]+)\s*[=\s]\s*(?:(?P<sym>[\"'])((?:\\(?P=sym)|(?:(?!(?P=sym))).)*)(?P=sym)|(\w+))|(\S+)")
 
     def __init__(self, rid, fReadOnly=True):
         dir_cur=os.path.dirname(os.path.realpath(__file__))
