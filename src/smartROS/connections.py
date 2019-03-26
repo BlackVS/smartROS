@@ -1,5 +1,3 @@
-# -*- coding: UTF-8 -*-
-
 from socket import SHUT_RDWR, error as SOCKET_ERROR, timeout as SOCKET_TIMEOUT
 from struct import pack, unpack
 

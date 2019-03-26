@@ -292,6 +292,8 @@ def connect(host, port, username, password, ssl_wrapper=CONN_WRAPPER_NO_SSL, tim
         sock = ssl_wrapper(sock)
         transport=SocketTransport(sock)
     except (SOCKET_ERROR, SOCKET_TIMEOUT) as error:
+        if error.reason=='NO_CIPHERS_AVAILABLE':
+            raise CipherUnsupportedError(error)
         raise ConnectionError(error)
     except:
         logger.error("Failed to create transport!")

@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 class LibError(Exception):
     """Base exception for all other."""
     #def __new__(cls, *args, **kw):
@@ -22,6 +21,10 @@ class ConfigError(LibError):
     pass
 
 class ConnectionError(LibError):
+    """Connection related errors."""
+    pass
+
+class CipherUnsupportedError(LibError):
     """Connection related errors."""
     pass
 

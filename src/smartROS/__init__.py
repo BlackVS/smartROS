@@ -95,6 +95,9 @@ class RouterContext(object):
         try:
             logger.debug("Trying connect to router with params:")
             api = rosapi.connect(cfg['ip'], cfg['port'], username, password, wrapper )
+        except CipherUnsupportedError as inst:
+            logger.error("This or remote system do not support required mode: \n wrapper: {}\n error: {}".format(wrapper,str(inst)))
+            raise
         except Exception as inst:
             logger.error("Failed to connect to router!")
             raise
