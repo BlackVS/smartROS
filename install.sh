@@ -74,8 +74,8 @@ function run() {
 print_h0 "Installing: $APPNAME"
 print_h0 "Install to: $INSTALLDIR"
 
-run "Creating folder $INSTALLDIR" \
-sudo mkdir $INSTALLDIR
+run "Creating folder $INSTALLDIR"
+create_and_check_dir $INSTALLDIR
 
 run "cloning from git" \
 sudo git clone $GITURL $INSTALLDIR
