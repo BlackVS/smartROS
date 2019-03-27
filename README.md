@@ -174,6 +174,13 @@ You may learn RouterOS API [here](https://wiki.mikrotik.com/wiki/Manual:API) but
    ```bash
    /ip/firewall/address-list/print where="list=='Blacklist' and address=='1.2.3.4'"
    ```
+   or in python:
+   ```python
+      import smartROS
+      router = smartROS.getRouter("Main")
+      print( router.do( "/ip/firewall/address-list/print", where = "list=='Blacklist' and address=='1.2.3.4'" ) )
+   ```
+   
    respectivly.
    Here are some rules for where conditions:
 #### 1. Where condition looks like:
@@ -194,6 +201,13 @@ You may learn RouterOS API [here](https://wiki.mikrotik.com/wiki/Manual:API) but
    ```bash
    /ip/route/print where="dynamic==true"
    ```
+   or in python:
+   ```python
+      import smartROS
+      router = smartROS.getRouter("Main")
+      print( router.ip.route.print( where = "dynamic==true" ) )
+   ```
+
 But if you need non dynamic routes and run
    ```bash
    /ip/route/print where="dynamic==false"
