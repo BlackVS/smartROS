@@ -34,6 +34,23 @@ check() {
     fi
 }
 
+check_dir() {
+    if [ ! -d "$1" ]; then
+        echo -e "${RED}FAIL${NC} to create $1, aborting script"
+        exit 1
+    fi
+}
+
+create_and_check_dir(){
+    if [ -d "$1" ]; then
+        echo -e "${YELLOW}WARNING${NC} director $1 already exists, bypass creating"
+    else
+        sudo mkdir $1
+        check_dir $1
+        check
+    fi
+}
+
 function print_h0(){
     echo -e "${WHITE}${BOLD}$@${NOBOLD}${NC}"
 }
@@ -80,29 +97,25 @@ run "installing dependencies" \
 sudo pip3 -q install -r requirements.txt
 
 print_h1 "Creating default log dir: $LOGDIR"
-sudo mkdir $LOGDIR
+create_and_check_dir $LOGDIR
 sudo chmod a+w $LOGDIR
-check
 
 print_h1 "Creating default temp dir: $TEMPDIR"
-sudo mkdir $TEMPDIR
+create_and_check_dir $TEMPDIR
 sudo chmod a+w $TEMPDIR
-check
 
 print_h1 "Creating config dir: $ETCDIR"
-sudo mkdir $ETCDIR
-check
+create_and_check_dir $ETCDIR
 
 print_h1 "Creating certificates' dir: $ETCDIR/certs"
-sudo mkdir $ETCDIR/certs
-check
+create_and_check_dir $ETCDIR/certs
 
 print_h1 "Creating default settings:"
-sudo cp $INSTALLDIR/src/smartROS/main.conf.template $ETC/main.conf
+sudo cp $INSTALLDIR/src/smartROS/main.conf.template $ETCDIR/main.conf
 check
 
 print_h1 "Creating routers.json config file:"
-sudo cp $INSTALLDIR/src/smartROS/routers.json.template $ETC/routers.json
+sudo cp $INSTALLDIR/src/smartROS/routers.json.template $ETCDIR/routers.json
 check
 
 print_h1 "WARNING: please manually check and update permission for temp/log folders, by default ALL have write permissions to these folder"
