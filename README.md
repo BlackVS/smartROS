@@ -239,7 +239,7 @@ Using SmartROS commands will be:
    ```python
       import smartROS
       router = smartROS.getRouter("Main")
-      router.do (/ip/firewall/address-list/add, address='1.2.3.4', list='Blacklist', timeout=86400, comment='Added via ban ip script')
+      router.do ("/ip/firewall/address-list/add", address='1.2.3.4', list='Blacklist', timeout=86400, comment='Added via ban ip script')
    ```
 Numbers/booleans can be used without quotes, all other values (including ipv4 addresses) must be single- or double- quoted.
 Sure you must use API user with write permissions for this.
