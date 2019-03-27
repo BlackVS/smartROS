@@ -190,7 +190,7 @@ You may learn RouterOS API [here](https://wiki.mikrotik.com/wiki/Manual:API) but
    * AND - and
    * OR  - or
    * NOT - not 
-   * HAS - special operations which allow to check if ettribute present. For example, dynamic routes have dynamic=True, but non-dynamic routes not contains attribute dynamic at all i.e. to get dynamic routes just call:
+   * HAS - special operation which allows to check if attribute present in results. For example, dynamic routes have _dynamic=True_, but non-dynamic routes not contains attribute _dynamic_ at all i.e. to get dynamic routes just call:
    ```bash
    /ip/route/print where="dynamic==true"
    ```
@@ -198,24 +198,24 @@ But if you need non dynamic routes and run
    ```bash
    /ip/route/print where="dynamic==false"
    ```
-you will get empty result ALWAYS. Beacusae non-dynamic routes haven't "dynamic" at all. In this case you can write:
+you will get empty result ALWAYS. Becausae non-dynamic routes haven't _dynamic_ property at all. In this case you can write:
    ```bash
    /ip/route/print where="has not dynamic"
    ```
 and this will work. Little bit crazy but it is specific of RouterOS %)
 
 #### 3. You may use parenthesis to create more complex conditions.
-#### 4. You may use in conditions:
+#### 4. You may use in conditions next arguments:
 _identifiers_ - consist of alhphas, digits and "\_". Also identifiers may start from dot (for example, _.id_)
 _numbers_
 _ipv4_ - ipv4 addresses and networks can be used without quotes
 _\*NNN_ - special values, indexes
 _true/false_ or _yes/no_ - boolean. _yes_ equal to _true_, _no_ to _false_.
-Rest of values must be used taken in quotes (single or double). I.e., for example, ipv6 addresses or any values which containes other from alphanum symbols.
+Rest of values must be used taken in quotes (single or double). I.e., for example, ipv6 addresses or any values which contains other non-alphanum symbols.
 
 ### Syntax. Setting values
-Some commands may uset parameters in router.
-For example, low-levels commands to add ip to blacklist will look like:
+Some commands may use parameters (set some property somewhere in router).
+For example, low-level commands to add ip 1.2.3.4 to blacklist will look like:
    ```bash
    <--- '/ip/firewall/address-list/add'
    <--- '=address=1.2.3.4'
@@ -226,11 +226,13 @@ For example, low-levels commands to add ip to blacklist will look like:
    ```
 Using SmartROS commands will be:
    ```bash
-   /ip/firewall/address-list/add address='1.2.3.4' list='Blacklist' timeout=86400 comment='Adding 4.2.3.4 to blacklist'
+   /ip/firewall/address-list/add address='1.2.3.4' list='Blacklist' timeout=86400 comment='Added via ban ip script'
    ```
 Numbers/booleans can be used without quotes, all other values (including ipv4 addresses) must be single- or double- quoted.
 Sure you must use API user with write permissions for this.
+Also preferred order is - name of atribitues in the left, values in the right.
 
+**ATTANTION! SmartROS nothing knows about structure of RouterOS commands or which parameters where must be used. SmartROS just converts your human-readable commands to the low-level ones and pass to RouterOS**
 
 ---
 
