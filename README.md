@@ -141,6 +141,97 @@ If all is ok you will see prompt and will be able run commands for example:
 to check all default gateways.
 Type /quit to exit from console
 
+### Syntax
+Each command ("sentence") to router costs of:
+**command** iself, it is in form "/menu1/menu2/menu3/command". For example here
+   ```bash
+      /ip/firewall/address-list/print where="list==Blacklist and address=='8.8.8.8'"
+   ```
+_ip_, _firewall_, _address_ - menu and submenu of RouterOS, _print_ - command. Usually they are the same as in the WinBox terminal.
+
+### Syntax. WHERE
+Some commands may use conditional clause to restrict result i.e. for example to find default gateways you need execute next commands using low-level RouterOS API:
+
+   ```bash
+   <--- '/ip/route/print'
+   <--- '?=dst-address=0.0.0.0/0'
+   <--- EOS
+   ```
+But if we need to check if some ip containg in Blacklist address list commands will look like:
+   ```bash
+   <--- '/ip/firewall/address-list/print'
+   <--- '?=list=Blacklist'
+   <--- '?=address=1.2.3.4'
+   <--- '?#&'
+   <--- EOS
+   ```
+i.e. little bit tricky. Espsecially for people who not familiar with Reverse Polish notation (RPN). 
+You may learn RouterOS API [here](https://wiki.mikrotik.com/wiki/Manual:API) but SmartROS allows you do not do this and write commands in more convinient form, for above examples to do:
+   ```bash
+   /ip/route/print where="dst-address=0.0.0.0/0"
+   ```
+   and
+   ```bash
+   /ip/firewall/address-list/print where="list=='Blacklist' and address=='1.2.3.4'"
+   ```
+   respectivly.
+   Here are some rules for where conditions:
+#### 1. Where condition looks like:
+   ```bash
+   where=condition
+   ```
+#### 2. Condition may consist of:
+   * == equal
+   * != not equal
+   * <  less
+   * >  greater
+   * <= less or equal
+   * >= greater or equal
+   * AND - and
+   * OR  - or
+   * NOT - not 
+   * HAS - special operations which allow to check if ettribute present. For example, dynamic routes have dynamic=True, but non-dynamic routes not contains attribute dynamic at all i.e. to get dynamic routes just call:
+   ```bash
+   /ip/route/print where="dynamic==true"
+   ```
+But if you need non dynamic routes and run
+   ```bash
+   /ip/route/print where="dynamic==false"
+   ```
+you will get empty result ALWAYS. Beacusae non-dynamic routes haven't "dynamic" at all. In this case you can write:
+   ```bash
+   /ip/route/print where="has not dynamic"
+   ```
+and this will work. Little bit crazy but it is specific of RouterOS %)
+
+#### 3. You may use parenthesis to create more complex conditions.
+#### 4. You may use in conditions:
+_identifiers_ - consist of alhphas, digits and "\_". Also identifiers may start from dot (for example, _.id_)
+_numbers_
+_ipv4_ - ipv4 addresses and networks can be used without quotes
+_\*NNN_ - special values, indexes
+_true/false_ or _yes/no_ - boolean. _yes_ equal to _true_, _no_ to _false_.
+Rest of values must be used taken in quotes (single or double). I.e., for example, ipv6 addresses or any values which containes other from alphanum symbols.
+
+### Syntax. Setting values
+Some commands may uset parameters in router.
+For example, low-levels commands to add ip to blacklist will look like:
+   ```bash
+   <--- '/ip/firewall/address-list/add'
+   <--- '=address=1.2.3.4'
+   <--- '=list=Blacklist'
+   <--- '=timeout=86400'
+   <--- '=comment=Added via ban ip script'
+   <--- EOS
+   ```
+Using SmartROS commands will be:
+   ```bash
+   /ip/firewall/address-list/add address='1.2.3.4' list='Blacklist' timeout=86400 comment='Adding 4.2.3.4 to blacklist'
+   ```
+Numbers/booleans can be used without quotes, all other values (including ipv4 addresses) must be single- or double- quoted.
+Sure you must use API user with write permissions for this.
+
+
 ---
 
 ### Known issues
