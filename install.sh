@@ -109,8 +109,10 @@ print_h1 "WARNING: please manually check and update permission for temp/log fold
 
 echo ""
 print_h0 "Please update config files:"
-echo " $INSTALLDIR/src/smartROS/settings.py"
-echo " $INSTALLDIR/src/smartROS/routers.json"
+echo " $ETCDIR/main.conf"
+echo " $ETCDIR/routers.json"
+print_h0 "Add if required certificates to certs folder:"
+echo " $ETCDIR/certs/"
 echo " "
 print_h0 "and test connection running test console (by default to router 0):"
 echo " $INSTALLDIR/src/test_console.py"
