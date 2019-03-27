@@ -233,7 +233,7 @@ Using SmartROS commands will be:
    ```python
       import smartROS
       router = smartROS.getRouter("Main")
-      router.ipfirewalladdress__list.add (address='1.2.3.4', list='Blacklist', timeout=86400, comment='Added via ban ip script')
+      router.ip.firewall.address__list.add (address='1.2.3.4', list='Blacklist', timeout=86400, comment='Added via ban ip script')
    ```
    or
    ```python
