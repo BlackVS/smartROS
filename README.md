@@ -54,14 +54,16 @@ Good security for ROS API can be achieved only combining at least:
  
 ### 3. Settings
 #### settings.py
-By default is in */opt/smartros/src/smartROS/settings.py*
-Usually you needn't edit this but in the case if startROS is called from otehr application changes may be required (for example, to forward logs in proper folder).
-* **app_name**    = "smartros"             # keyword, don't change if not sure
-* **app_tmp_dir** = "/tmp/" + app_name     # script must have write permissions to this folder
-* **app_log_dir** = "/var/log/" + app_name # script must have write permissions to this folder
+By default is in */etc/smartros/main.conf*
+Usually you needn't edit this settings but in the case if startROS is called from other application changes may be required (for example, to forward logs in proper folder).
+* **app_tmp_dir** : by default /tmp/smartros - temp dir, script must have write permissions to this folder
+* **app_log_dir** : by default /var/log/smartros" - log dir, script must have write permissions to this folder
+* **app_certs_dir** : by default /etc/smartros/certs - certificates dir, script must have read permissions to this folder
+* **debug** : set to True if need verbose debug information in the console and logs
 
 #### routers.json
-JSON file containg credentials for all routers to connect to.
+By default is in */etc/smartros/routers.conf*
+JSON file contains credentials for all routers to connect to.
    ```
    {  Router1ShortName : {Router1Parameters} [,
       Router2ShortName : {Router2Parameters},
@@ -102,7 +104,7 @@ For example:
      }
     }
    ```
-Here is the first router (shortname 0 or "0") will be connected to using TLS ADH-AES128-SHA256 (without certificates, right now ROS supports only this cipher for SSL without certificates), the second one will be connected to using certificate. Sure both routers must have API SSL enabled, proper users with mentioned passwords created and certificates for the second one generated. CA certificate named *ca1.crt*  of the second router must be placed in the *smartROS/certs* folder.  
+Here is the first router (shortname 0 or "0") will be connected to using TLS ADH-AES128-SHA256 (without certificates, right now ROS supports only this cipher for SSL without certificates), the second one will be connected to using certificate. Sure both routers must have API SSL enabled, proper users with mentioned passwords created and certificates for the second one generated. CA certificate named *ca1.crt*  of the second router must be placed in the *certs* folder.  In teh case of realtive path of certificate given it will be searched starting from **app_certrs_dir**
 
 #### OpenSSL
 If you use secure connection WITHOUT certificates to router you must have ADH support enabled in OpenSSL.
