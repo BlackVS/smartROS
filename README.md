@@ -259,7 +259,7 @@ Numbers/booleans can be used without quotes, all other values (including ipv4 ad
 Sure you must use API user with write permissions for this.
 Also preferred order is - name of atribitues in the left, values in the right.
 
-**ATTANTION! SmartROS nothing knows about structure of RouterOS commands or which parameters where must be used. SmartROS just converts your human-readable commands to the low-level ones and pass to RouterOS**
+**ATTENTION!** SmartROS nothing knows about structure of RouterOS commands or which parameters where must be used. SmartROS just converts your human-readable commands to the low-level ones and pass to RouterOS
 
 ---
 
