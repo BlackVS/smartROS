@@ -225,8 +225,21 @@ For example, low-level commands to add ip 1.2.3.4 to blacklist will look like:
    <--- EOS
    ```
 Using SmartROS commands will be:
+   console:
    ```bash
    /ip/firewall/address-list/add address='1.2.3.4' list='Blacklist' timeout=86400 comment='Added via ban ip script'
+   ```
+   python code (use "\_\_" instead "-" in the command if use first style calls)  :
+   ```python
+      import smartROS
+      router = smartROS.getRouter("Main")
+      router.ipfirewalladdress__list.add (address='1.2.3.4', list='Blacklist', timeout=86400, comment='Added via ban ip script')
+   ```
+   or
+   ```python
+      import smartROS
+      router = smartROS.getRouter("Main")
+      router.do (/ip/firewall/address-list/add, address='1.2.3.4', list='Blacklist', timeout=86400, comment='Added via ban ip script')
    ```
 Numbers/booleans can be used without quotes, all other values (including ipv4 addresses) must be single- or double- quoted.
 Sure you must use API user with write permissions for this.
