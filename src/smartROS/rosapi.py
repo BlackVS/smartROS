@@ -56,7 +56,7 @@ class CONN_WRAPPER_TLS_CERT(object):
         ctx.check_hostname = False
         #
         if not os.path.isabs(certs_dir):
-            dir_cur=os.path.dirname(os.path.realpath(__file__))
+            dir_cur=SETTINGS.app_certs_dir
             certs_dir=os.path.join(dir_cur, certs_dir)
         #now certs_dir is abs path
         if not os.path.exists(certs_dir):

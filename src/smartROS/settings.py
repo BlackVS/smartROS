@@ -1,15 +1,16 @@
 #################################################################################
 import configparser
 
+#don't change default dirs if use insta;;.sh
 _APP_NAME = "smartros" # keyword, don't change if not sure
 
 class Settings(object):
     config_global = {
+        'app_config_dir': "/etc/%s/" % _APP_NAME,
         # defaults
-        'app_tmp_dir'  : "/tmp/" + _APP_NAME,          # script must have write permissions to this folder
-        'app_log_dir'  : "/var/log/" + _APP_NAME,      # script must have write permissions to this folder
-        'app_certs_dir': "/etc/%s/certs" % _APP_NAME,  # if relative path - should be in .../src/smartROS/ folder
-        #app_certs_dir : "certs"   # if relative path - should be in .../src/smartROS/ folder
+        'app_tmp_dir'   : "/tmp/" + _APP_NAME,          # script must have write permissions to this folder
+        'app_log_dir'   : "/var/log/" + _APP_NAME,      # script must have write permissions to this folder
+        'app_certs_dir' : "/etc/%s/certs" % _APP_NAME,  # default certificates folder
         'debug'        : False,
         #debug       = True
        }

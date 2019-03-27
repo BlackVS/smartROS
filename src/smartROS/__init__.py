@@ -67,9 +67,7 @@ class RouterContext(object):
     reConsoleParser = re.compile(r"([\w.]+)\s*[=\s]\s*(?:(?P<sym>[\"'])((?:\\(?P=sym)|(?:(?!(?P=sym))).)*)(?P=sym)|(\w+))|(\S+)")
 
     def __init__(self, rid, fReadOnly=True):
-        dir_cur=os.path.dirname(os.path.realpath(__file__))
-        config=self.read_config(dir_cur)
-
+        config=self.read_config(SETTINGS.app_config_dir)
         sid=str(rid)
         cfg=config.get(sid,None)
         if cfg==None:
