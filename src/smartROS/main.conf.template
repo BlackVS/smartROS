@@ -1,0 +1,6 @@
+[global]
+app_tmp_dir = /tmp/smartros
+app_log_dir = /var/log/smartros
+app_certs_dir = /etc/smartros/certs
+debug = False
+

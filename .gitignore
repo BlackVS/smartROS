@@ -105,7 +105,6 @@ venv.bak/
 
 #VS
 .vs/
-settings.py
 *.json
 *.crt
 *.pem
