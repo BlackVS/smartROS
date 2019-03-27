@@ -184,9 +184,9 @@ You may learn RouterOS API [here](https://wiki.mikrotik.com/wiki/Manual:API) but
    * == equal
    * != not equal
    * <  less
-   * >  greater
+   * \>  greater
    * <= less or equal
-   * >= greater or equal
+   * \>= greater or equal
    * AND - and
    * OR  - or
    * NOT - not 
